@@ -1,5 +1,6 @@
 from .abstract_model import AbstractModel
 from database.db import db
+from deep_translator import GoogleTranslator
 
 
 class LanguageModel(AbstractModel):
@@ -20,3 +21,9 @@ class LanguageModel(AbstractModel):
             language.to_dict()
             for language in LanguageModel.find()
         ]
+
+
+class TranslationModel:
+    @classmethod
+    def translate(cls, text: str, target: str) -> str:
+        return GoogleTranslator(source="auto", target=target).translate(text)
