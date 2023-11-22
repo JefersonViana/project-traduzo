@@ -13,6 +13,7 @@ def index():
         'translate_to': "en",
         'translated': "What do you want to translate?"
     }
+
     return render_template("index.html", **data)
 
 
@@ -25,6 +26,7 @@ def translate():
         text_to_translate,
         translate_to
     )
+
     data = {
         'languages': LanguageModel.list_dicts(),
         'text_to_translate': text_to_translate,
@@ -32,4 +34,26 @@ def translate():
         'translate_to': translate_to,
         'translated': translated
     }
+
+    return render_template("index.html", **data)
+
+
+@traductor_controller.post("/reverse")
+def reverse():
+    text_to_translate = request.form['text-to-translate']
+    translate_from = request.form['translate-from']
+    translate_to = request.form['translate-to']
+    translated = TranslationModel.translate(
+        text_to_translate,
+        translate_to
+    )
+
+    data = {
+        'languages': LanguageModel.list_dicts(),
+        'text_to_translate': translated,
+        'translate_from': translate_to,
+        'translate_to': translate_from,
+        'translated': text_to_translate
+    }
+
     return render_template("index.html", **data)
