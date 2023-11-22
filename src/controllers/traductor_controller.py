@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request
 from models.language_model import LanguageModel, TranslationModel
+from models.history_model import HistoryModel
 
 traductor_controller = Blueprint("traductor_controller", __name__)
 
@@ -22,6 +23,11 @@ def translate():
     text_to_translate = request.form['text-to-translate']
     translate_from = request.form['translate-from']
     translate_to = request.form['translate-to']
+    HistoryModel({
+        'text_to_translate': text_to_translate,
+        'translate_from': translate_from,
+        'translate_to': translate_to
+    }).save()
     translated = TranslationModel.translate(
         text_to_translate,
         translate_to
